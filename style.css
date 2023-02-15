@@ -1,0 +1,18 @@
+#game{
+    background-color: #333;
+    width: 600px;
+    height: 500px;
+}
+.buttons{
+
+}
+.snowman-container{
+    position: relative;
+    left: 0;
+    top: 370px;
+}
+
+#snowMan{
+    display: inline;
+    height: 125px;
+}

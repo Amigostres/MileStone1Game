@@ -9,22 +9,23 @@ gameContainer.addEventListener('click', (e) => {
     snowball.style.top = '360px'
     snowball.style.left = '30px'
     gameContainer.appendChild(snowball)
-  
+
     //getting mouse location
     const x = e.clientX 
     const y = e.clientY 
-
+    console.log(`y: ${y}`);
     //calculate the slope
     const rise = y - 140
+
     const run = x - 30
 
     const slope = rise/run
 
-    const riseB = slope * 570  
-    console.log(riseB);
+    const riseB = slope * 570
+    console.log(`riseB:${riseB}`);
     //x is always 600
     const endX = 600
-    const endY = riseB - 140
+    const endY = riseB * slope
     console.log(`endY: ${endY}`)
 
 
@@ -32,12 +33,9 @@ gameContainer.addEventListener('click', (e) => {
 
     //using the Pythagorean theorem we the the distance from location (30,360) to mouse location
     const distance = Math.sqrt(endX ** 2 + endY ** 2)
-    console.log(`discance: ${distance}`);
     // console.log(`distance:${distance}`)
     const speed = distance / 10500; // adjust this value to change the animation duration
     console.log(`speed:${speed}`)
-    //const increment = 600 // this is so that it 100% goes off
-    //note this does not help lol
 
     let intervalId = setInterval(() => {
 

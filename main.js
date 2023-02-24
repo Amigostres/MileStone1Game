@@ -29,16 +29,18 @@ gameContainer.addEventListener(`click`, (e) => {
     // y = mx + b
     let endY = (endX * slope) + 360
 
-    const distance = Math.sqrt(endX ** 2 + endY ** 2)
-    const speed = distance / 10500; // adjust this value to change the animation duration
+    // const distance = Math.sqrt(endX ** 2 + endY ** 2)
+
+    const speed = 30; // adjust this value to change the animation duration
 
 
     let intervalId = setInterval(() => {
 
-        const snowballX = parseFloat(snowball.style.left) // parseInt is to get rid of the 'px'
-        const snowballY = parseFloat(snowball.style.top)
-        const deltaX = (endX - snowballX) * speed //delta = (mouselocation - starting) * duration
-        const deltaY = (endY - snowballY) * speed
+        let snowballX = parseFloat(snowball.style.left) // parseInt is to get rid of the 'px'
+        let snowballY = parseFloat(snowball.style.top)
+        
+        const deltaX = (endX - snowballX) / Math.sqrt((endX - snowballX)**2 + (endY - snowballY)**2) * speed
+        const deltaY = (endY - snowballY) / Math.sqrt((endX - snowballX)**2 + (endY - snowballY)**2) * speed
   
         snowball.style.left = `${snowballX + deltaX}px`
         snowball.style.top = `${snowballY + deltaY}px`

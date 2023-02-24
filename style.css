@@ -35,3 +35,9 @@
     /* top: 390px;
     left: 30px; */
 }
+.Zombie{
+    position: absolute;
+    top: 370px;
+    left: 450px;
+    height: 125px;
+}

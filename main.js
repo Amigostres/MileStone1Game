@@ -1,4 +1,19 @@
 const gameContainer = document.querySelector("#game")
+const zombie = document.querySelector(`.Zombie`)
+const audioPool = []
+
+// create audio elements and add them to the audio pool
+for (let i = 0; i < 5; i++) {
+    const audio = new Audio('assets/thrownSnoballSound.mp3')
+    audioPool.push(audio)
+}
+
+
+let audioIndex = 0
+
+
+
+
 gameContainer.addEventListener(`click`, (e) => {
     //creates the snowball
     const snowball = document.createElement('img')
@@ -9,6 +24,9 @@ gameContainer.addEventListener(`click`, (e) => {
     snowball.style.left = '30px'
     gameContainer.appendChild(snowball)
     
+    audioPool[audioIndex].currentTime = 0
+    audioPool[audioIndex].play()
+    audioIndex = (audioIndex + 1) % audioPool.length
 
     //get the mouse location
     const targetX = e.clientX
@@ -23,7 +41,7 @@ gameContainer.addEventListener(`click`, (e) => {
     let slope = rise/run
     console.log(slope);
     //the end of the page
-    const endX = 600
+    const endX = gameContainer.clientWidth
     
     //linear equation
     // y = mx + b
@@ -45,7 +63,19 @@ gameContainer.addEventListener(`click`, (e) => {
         snowball.style.left = `${snowballX + deltaX}px`
         snowball.style.top = `${snowballY + deltaY}px`
 
-        if (snowballX >= 560 || snowballY >= 500) { // I don't want the snowball to go under so I delete iti f it does
+        // check for intersection with zombie
+        const snowballRect = snowball.getBoundingClientRect()
+        const zombieRect = zombie.getBoundingClientRect()
+
+        if (intersectRect(snowballRect, zombieRect)) {
+            console.log('Hit!')
+            clearInterval(intervalId)   // stops interval 
+            gameContainer.removeChild(snowball) // deletes the snowball
+        }
+        
+
+
+        if (snowballX >= endX - 100 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
             console.log(`out of the div`);
             clearInterval(intervalId) // stops interval 
             gameContainer.removeChild(snowball) // deletes the snowball
@@ -53,3 +83,13 @@ gameContainer.addEventListener(`click`, (e) => {
       }, 30)
 
 })
+
+
+function intersectRect(rect1, rect2) {
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
+}

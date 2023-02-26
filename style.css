@@ -1,3 +1,8 @@
+html{
+    background-image: url("assets/bg-wool-dark.png");
+    background-size: 125px;
+    background-repeat: repeat;
+}
 .unselectable { /* this is here to that we can't highlight things while playing*/
     -webkit-user-select: none;
     -webkit-touch-callout: none;
@@ -6,13 +11,22 @@
     user-select: none;
     color: #cc0000;
   }
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  
 
 #game{
-    background-color: #333;
+    background-image: url("assets/plainsBackground.png");
+    background-size: cover;
     position: absolute;
     top: 0;
     left: 0;
-    width: 600px;
+    width: 100%;
     height: 500px;
 }
 /* .buttons{

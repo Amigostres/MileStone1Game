@@ -6,24 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bob the Snow-Golem</title>
     <link rel="stylesheet" href="style.css">
+
+
 </head>
 <body>
-    <div id="game" class="unselectable">
-        <!--I feel like js will take the #game and create img tags for zombies,skeletons-->
-        <!--when the game will start once the button is pressed-->
+    <div class="flex-container">
+        <div id="game" class="unselectable">
+            <!--I feel like js will take the #game and create img tags for zombies,skeletons-->
+            <!--when the game will start once the button is pressed-->
+    
+    
+            <div class="snowman-container unselectable">
+                <img src="assets/Snowman.png" alt="snowman"  id="snowMan" draggable="false" class="unselectable">
+            </div><!--when the screen is pressed I want the snow Golem to shoot snowballs-->
+    
+    
+            <img src="assets/gifs/transparentZombieAnimation.gif" alt="" class="Zombie" class="unselectable" draggable="false">
+    
+        </div>
 
 
-        <div class="snowman-container unselectable">
-            <img src="assets/Snowman.png" alt="snowman"  id="snowMan" draggable="false" class="unselectable">
-        </div><!--when the screen is pressed I want the snow Golem to shoot snowballs-->
-
-
-        <img src="assets/gifs/transparentZombieAnimation.gif" alt="" class="Zombie" class="unselectable" draggable="false">
-
+        <button class="startBtn">start</button>
     </div>
-
-    <button class="startBtn">start</button>
-
+    <audio id="thrownSnoballSound" src="assets/thrownSnoballSound.mp3"></audio>
     <script src="main.js"></script>
 </body>
 </html>

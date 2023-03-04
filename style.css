@@ -2,6 +2,8 @@ html{
     background-image: url("assets/bg-wool-dark.png");
     background-size: 125px;
     background-repeat: repeat;
+    margin: 0;
+    padding: 0;
 }
 .unselectable { /* this is here to that we can't highlight things while playing*/
     -webkit-user-select: none;
@@ -11,31 +13,48 @@ html{
     user-select: none;
     color: #cc0000;
   }
-.flex-container {
+  .flex-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    flex-direction: column;
   }
+
   
   
 
 #game{
     background-image: url("assets/plainsBackground.png");
     background-size: cover;
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 600px;
     height: 500px;
 }
-/* .buttons{
-
-} */
 .snowman-container{
     position: relative;
     left: 0;
     top: 370px;
+}
+.maps{
+    display:flex;
+    justify-content: center;
+}
+.dimensions{
+    height: 200px;
+    width: 200px;
+    color: #e97827;
+    font-weight: 900;
+    font-size: 20px;
+}
+.overWorldBtn{
+    background-image: url("assets/plainsBackground.png");
+    background-size: cover;
+}
+.netherBtn{
+    background-image: url("assets/NetherIcon.png");
+    background-size: cover;
 }
 
 #snowMan{

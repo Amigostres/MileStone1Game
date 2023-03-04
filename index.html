@@ -12,23 +12,25 @@
 <body>
     <div class="flex-container">
         <div id="game" class="unselectable">
-            <!--I feel like js will take the #game and create img tags for zombies,skeletons-->
-            <!--when the game will start once the button is pressed-->
-    
-    
-            <div class="snowman-container unselectable">
-                <img src="assets/Snowman.png" alt="snowman"  id="snowMan" draggable="false" class="unselectable">
-            </div><!--when the screen is pressed I want the snow Golem to shoot snowballs-->
-    
-    
-            <img src="assets/gifs/transparentZombieAnimation.gif" alt="" class="Zombie" class="unselectable" draggable="false">
-    
+          <!--I feel like js will take the #game and create img tags for zombies,skeletons-->
+          <!--when the game will start once the button is pressed-->
+        
+          <div class="snowman-container unselectable">
+            <img src="assets/Snowman.png" alt="snowman"  id="snowMan" draggable="false" class="unselectable">
+          </div><!--when the screen is pressed I want the snow Golem to shoot snowballs-->
+        
+          <img src="assets/gifs/transparentZombieAnimation.gif" alt="" class="Zombie" class="unselectable" draggable="false">
+        
         </div>
+      </div>
+      <div class="maps">
+        <button class="overWorldBtn dimensions">Over World</button>
+        <button class="netherBtn dimensions">Nether</button>
+      </div>
 
 
-        <button class="startBtn">start</button>
-    </div>
     <audio id="thrownSnoballSound" src="assets/thrownSnoballSound.mp3"></audio>
+    <script src="zombies.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

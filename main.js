@@ -1,5 +1,6 @@
 const gameContainer = document.querySelector("#game")
 const zombie = document.querySelector(`.Zombie`)
+const snowMan = document.getElementById('snowMan')
 const audioPool = []
 
 // create audio elements and add them to the audio pool
@@ -7,21 +8,25 @@ for (let i = 0; i < 5; i++) {
     const audio = new Audio('assets/thrownSnoballSound.mp3')
     audioPool.push(audio)
 }
-
-
 let audioIndex = 0
-
+let zombieEntity = new Zombies()
+// console.log(zombieEntity.health);
 
 
 
 gameContainer.addEventListener(`click`, (e) => {
+    
+    let gameRect = gameContainer.getBoundingClientRect()
+    console.log(gameRect.right); // this is to deal with flex box
+
+
     //creates the snowball
     const snowball = document.createElement('img')
     snowball.src = 'assets/SnowBall.png'
     snowball.className = 'snowBall'
     snowball.setAttribute('draggable', 'false')
-    snowball.style.top = '360px'
-    snowball.style.left = '30px'
+    snowball.style.top = `360px` //360px
+    snowball.style.left = `30px` //30px
     gameContainer.appendChild(snowball)
     
     audioPool[audioIndex].currentTime = 0
@@ -29,19 +34,20 @@ gameContainer.addEventListener(`click`, (e) => {
     audioIndex = (audioIndex + 1) % audioPool.length
 
     //get the mouse location
-    const targetX = e.clientX
-    console.log(`x: ${targetX}`);
+    const targetX = e.clientX - gameRect.x
+    // console.log(`x: ${targetX}`);
     const targetY = e.clientY
-    console.log(`y: ${targetY}`);
+    // console.log(`y: ${targetY}`);
 
     //get the slope
     //get rise
     let rise = targetY - 360
     let run = targetX - 30
     let slope = rise/run
-    console.log(slope);
+    // console.log(slope);
     //the end of the page
-    const endX = gameContainer.clientWidth
+    const endX = gameContainer.clientWidth 
+    console.log(gameContainer.clientWidth);
     
     //linear equation
     // y = mx + b
@@ -68,15 +74,15 @@ gameContainer.addEventListener(`click`, (e) => {
         const zombieRect = zombie.getBoundingClientRect()
 
         if (intersectRect(snowballRect, zombieRect)) {
-            console.log('Hit!')
+            // console.log('Hit!')
             clearInterval(intervalId)   // stops interval 
             gameContainer.removeChild(snowball) // deletes the snowball
         }
         
 
 
-        if (snowballX >= endX - 100 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
-            console.log(`out of the div`);
+        if (snowballX >= endX - 30 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
+            // console.log(`out of the div`);
             clearInterval(intervalId) // stops interval 
             gameContainer.removeChild(snowball) // deletes the snowball
           }

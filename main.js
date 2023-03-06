@@ -1,5 +1,5 @@
 const gameContainer = document.querySelector("#game")
-const zombie = document.querySelector(`.Zombie`)
+const zombie = document.querySelector(`.Zombie`) 
 const snowMan = document.getElementById('snowMan')
 const audioPool = []
 
@@ -17,7 +17,7 @@ let zombieEntity = new Zombies()
 gameContainer.addEventListener(`click`, (e) => {
     
     let gameRect = gameContainer.getBoundingClientRect()
-    console.log(gameRect.right); // this is to deal with flex box
+    console.log(gameRect); // this is to deal with flex box
 
 
     //creates the snowball
@@ -25,7 +25,7 @@ gameContainer.addEventListener(`click`, (e) => {
     snowball.src = 'assets/SnowBall.png'
     snowball.className = 'snowBall'
     snowball.setAttribute('draggable', 'false')
-    snowball.style.top = `360px` //360px
+    snowball.style.top = `360px` //360px this is relative
     snowball.style.left = `30px` //30px
     gameContainer.appendChild(snowball)
     
@@ -34,6 +34,7 @@ gameContainer.addEventListener(`click`, (e) => {
     audioIndex = (audioIndex + 1) % audioPool.length
 
     //get the mouse location
+    //e.clientX is absolute so we make it relative by substracting gameRect.x
     const targetX = e.clientX - gameRect.x
     // console.log(`x: ${targetX}`);
     const targetY = e.clientY
@@ -73,10 +74,16 @@ gameContainer.addEventListener(`click`, (e) => {
         const snowballRect = snowball.getBoundingClientRect()
         const zombieRect = zombie.getBoundingClientRect()
 
-        if (intersectRect(snowballRect, zombieRect)) {
+        if (intersectRect(snowballRect, zombieRect)) { // this will check if 
             // console.log('Hit!')
             clearInterval(intervalId)   // stops interval 
+            zombieEntity.health -= 5
+            console.log(zombieEntity.health);
             gameContainer.removeChild(snowball) // deletes the snowball
+            if(zombieEntity.health <= 0){
+                console.log(`it's DEAD!!`);
+                delete zombieEntity // this does not link to the one 
+            }
         }
         
 
@@ -91,7 +98,10 @@ gameContainer.addEventListener(`click`, (e) => {
 })
 
 
-function intersectRect(rect1, rect2) {
+
+
+
+function intersectRect(rect2, rect1) {
     return !(
         rect1.right < rect2.left ||
         rect1.left > rect2.right ||

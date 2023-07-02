@@ -1,5 +1,5 @@
+
 const gameContainer = document.querySelector("#game")
-const zombie = document.querySelector(`.Zombie`) 
 const snowMan = document.getElementById('snowMan')
 const audioPool = []
 
@@ -9,15 +9,25 @@ for (let i = 0; i < 5; i++) {
     audioPool.push(audio)
 }
 let audioIndex = 0
-let zombieEntity = new Zombies()
-// console.log(zombieEntity.health);
 
+zombieInstances = [];
+
+setInterval(() => {
+    if (Zombies.count < 5 && .3 > (Math.random() + .1) ) {
+        let zombie = new Zombies();
+        zombieInstances.push(zombie);
+        zombieInstances.spawn(gameContainer);
+        console.log(zombieInstances);
+    } else {
+        console.log('zombie did not spawn');
+    }
+}, 1000);
 
 
 gameContainer.addEventListener(`click`, (e) => {
     
     let gameRect = gameContainer.getBoundingClientRect()
-    console.log(gameRect); // this is to deal with flex box
+    console.log(gameRect); // this is to deal with dynamic distance from flex box
 
 
     //creates the snowball
@@ -48,7 +58,7 @@ gameContainer.addEventListener(`click`, (e) => {
     // console.log(slope);
     //the end of the page
     const endX = gameContainer.clientWidth 
-    console.log(gameContainer.clientWidth);
+    console.log(`container width ${gameContainer.clientWidth}`);
     
     //linear equation
     // y = mx + b
@@ -72,19 +82,19 @@ gameContainer.addEventListener(`click`, (e) => {
 
         // check for intersection with zombie
         const snowballRect = snowball.getBoundingClientRect()
-        const zombieRect = zombie.getBoundingClientRect()
+        // const zombieRect = zombie.getBoundingClientRect()
 
-        if (intersectRect(snowballRect, zombieRect)) { // this will check if 
-            // console.log('Hit!')
-            clearInterval(intervalId)   // stops interval 
-            zombieEntity.health -= 5
-            console.log(zombieEntity.health);
-            gameContainer.removeChild(snowball) // deletes the snowball
-            if(zombieEntity.health <= 0){
-                console.log(`it's DEAD!!`);
-                delete zombieEntity // this does not link to the one 
-            }
-        }
+        // if (intersectRect(snowballRect, zombieRect)) { // this will check if 
+        //     // console.log('Hit!')
+        //     clearInterval(intervalId)   // stops interval 
+        //     zombieEntity.health -= 5
+        //     console.log(zombieEntity.health);
+        //     gameContainer.removeChild(snowball) // deletes the snowball
+        //     if(zombieEntity.health <= 0){
+        //         console.log(`it's DEAD!!`);
+        //         delete zombieEntity // this does not link to the one 
+        //     }
+        // }
         
 
 

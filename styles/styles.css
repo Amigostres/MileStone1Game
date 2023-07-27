@@ -1,0 +1,77 @@
+html {
+  background-image: url("../assets/bg-wool-dark.png");
+  background-size: 125px;
+  background-repeat: repeat;
+  margin: 0;
+  padding: 0;
+}
+
+.unselectable { /* this is here to that we can't highlight things while playing*/
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  user-select: none;
+  color: #cc0000;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.flex-container #game {
+  background-image: url("../assets/plainsBackground.png");
+  background-size: cover;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 500px;
+}
+
+.snowman-container {
+  position: relative;
+  left: 0;
+  top: 370px;
+}
+
+.maps {
+  display: flex;
+  justify-content: center;
+}
+.maps .dimensions {
+  height: 200px;
+  width: 200px;
+  color: #e97827;
+  font-weight: 900;
+  font-size: 20px;
+}
+.maps .overWorldBtn {
+  background-image: url("../assets/plainsBackground.png");
+  background-size: cover;
+}
+.maps .netherBtn {
+  background-image: url("../assets/NetherIcon.png");
+  background-size: cover;
+}
+
+#snowMan {
+  display: inline;
+  height: 125px;
+}
+
+.snowBall {
+  position: absolute;
+  /* display: inline; */
+  height: 30px;
+  /* top: 390px;
+  left: 30px; */
+}
+
+.Zombie {
+  position: absolute;
+  /* top: 370px;
+  left: 450px; */
+  height: 125px;
+}/*# sourceMappingURL=styles.css.map */

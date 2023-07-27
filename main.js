@@ -13,15 +13,28 @@ let audioIndex = 0
 zombieInstances = [];
 
 setInterval(() => {
+    //when there are less than 5 zombies give a 1/3 chance of spawning one every second
     if (Zombies.count < 5 && .3 > (Math.random() + .1) ) {
-        let zombie = new Zombies();
-        zombieInstances.push(zombie);
-        zombieInstances.spawn(gameContainer);
-        console.log(zombieInstances);
+        let zombie = new Zombies()
+        zombieInstances.push(zombie)
+
+
+        //creating the zombie element with image element
+        const zombieElement = document.createElement('img')
+        zombieElement.src = zombie.src
+
+        zombieElement.setAttribute('draggable', 'false')
+        zombieElement.className = 'Zombie'
+        zombieElement.style.top = zombie.top + 'px' // Set the top position of the zombie element
+        zombieElement.style.left = zombie.left + 'px' // Set the left position of the zombie element
+
+        gameContainer.append(zombieElement)
+
+        console.log(zombieInstances)
     } else {
-        console.log('zombie did not spawn');
+        console.log('zombie did not spawn')
     }
-}, 1000);
+}, 1000)
 
 
 gameContainer.addEventListener(`click`, (e) => {
@@ -58,7 +71,6 @@ gameContainer.addEventListener(`click`, (e) => {
     // console.log(slope);
     //the end of the page
     const endX = gameContainer.clientWidth 
-    console.log(`container width ${gameContainer.clientWidth}`);
     
     //linear equation
     // y = mx + b

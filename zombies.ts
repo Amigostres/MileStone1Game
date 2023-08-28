@@ -1,7 +1,17 @@
 class Zombies{
 
-    static count = 0
-    constructor(){
+    static count: number = 0
+
+    //declaring variable ahead of time with their datatypes
+    public health: number;
+    public damage: number;
+    public src: string;
+    public instanceId: number;
+    public height: string;
+    public top: number;
+    public left: number;
+
+    constructor() {
         this.health = 20
         this.damage = 5
         this.src = ("assets/gifs/transparentZombieAnimation.gif")

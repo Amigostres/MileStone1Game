@@ -1,7 +1,7 @@
 
-const gameContainer = document.querySelector("#game")
-const snowMan = document.getElementById('snowMan')
-const audioPool = []
+const gameContainer: HTMLElement | null = document.querySelector("#game")
+const snowMan : HTMLElement | null  = document.getElementById('snowMan')
+const audioPool: HTMLAudioElement[] = []
 
 // create audio elements and add them to the audio pool
 for (let i = 0; i < 5; i++) {
@@ -10,7 +10,7 @@ for (let i = 0; i < 5; i++) {
 }
 let audioIndex = 0
 
-zombieInstances = [];
+let zombieInstances: any[] = [];
 
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
@@ -28,7 +28,7 @@ setInterval(() => {
         zombieElement.style.top = zombie.top + 'px' // Set the top position of the zombie element
         zombieElement.style.left = zombie.left + 'px' // Set the left position of the zombie element
 
-        gameContainer.append(zombieElement)
+        gameContainer?.append(zombieElement)
 
         console.log(zombieInstances)
     } else {
@@ -37,7 +37,7 @@ setInterval(() => {
 }, 1000)
 
 
-gameContainer.addEventListener(`click`, (e) => {
+gameContainer?.addEventListener(`click`, (e) => {
     
     let gameRect = gameContainer.getBoundingClientRect()
     console.log(gameRect); // this is to deal with dynamic distance from flex box
@@ -123,11 +123,11 @@ gameContainer.addEventListener(`click`, (e) => {
 
 
 
-function intersectRect(rect2, rect1) {
-    return !(
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right ||
-        rect1.bottom < rect2.top ||
-        rect1.top > rect2.bottom
-    );
-}
+// function intersectRect(rect2, rect1) {
+//     return !(
+//         rect1.right < rect2.left ||
+//         rect1.left > rect2.right ||
+//         rect1.bottom < rect2.top ||
+//         rect1.top > rect2.bottom
+//     );
+// }

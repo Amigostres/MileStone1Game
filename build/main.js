@@ -9,6 +9,7 @@ for (let i = 0; i < 5; i++) {
 }
 let audioIndex = 0;
 let zombieInstances = [];
+//spawn zombie once a few seconds
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
     if (Zombies.count < 5 && .3 > (Math.random() + .1)) {
@@ -17,6 +18,8 @@ setInterval(() => {
         //creating the zombie element with image element
         const zombieElement = document.createElement('img');
         zombieElement.src = zombie.src;
+        // zombieElement.id = zombie.instanceId.toString()
+        zombieElement.setAttribute('id', zombie.instanceId.toString());
         zombieElement.setAttribute('draggable', 'false');
         zombieElement.className = 'Zombie';
         zombieElement.style.top = zombie.top + 'px'; // Set the top position of the zombie element
@@ -28,6 +31,25 @@ setInterval(() => {
         console.log('zombie did not spawn');
     }
 }, 1000);
+setInterval(() => {
+    console.log(zombieInstances);
+    zombieInstances.forEach((zombieInstance, index) => {
+        // Get the corresponding DOM element for the zombie instance
+        const zombieElement = document.querySelector(`.Zombie[id="${zombieInstance.instanceId}"]`);
+        console.log(zombieElement + '======================================');
+        if (!zombieElement)
+            return; // Return if element doesn't exist
+        const currentLeftPosition = parseFloat(zombieElement.style.left);
+        // If zombie is out of the screen on the left, remove it from the DOM and the array
+        if (currentLeftPosition + zombieElement.clientWidth < 0) {
+            gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.removeChild(zombieElement);
+            zombieInstances.splice(index, 1); // Remove the zombie from the instances array
+            return;
+        }
+        // Otherwise, update its position
+        zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
+    });
+}, 30);
 gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addEventListener(`click`, (e) => {
     let gameRect = gameContainer.getBoundingClientRect();
     console.log(gameRect); // this is to deal with dynamic distance from flex box
@@ -89,9 +111,11 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
         }
     }, 30);
 });
-function intersectRect(rect2, rect1) {
-    return !(rect1.right < rect2.left ||
-        rect1.left > rect2.right ||
-        rect1.bottom < rect2.top ||
-        rect1.top > rect2.bottom);
-}
+// function intersectRect(rect2, rect1) {
+//     return !(
+//         rect1.right < rect2.left ||
+//         rect1.left > rect2.right ||
+//         rect1.bottom < rect2.top ||
+//         rect1.top > rect2.bottom
+//     );
+// }

@@ -10,8 +10,10 @@ class Zombies{
     public height: string;
     public top: number;
     public left: number;
+    public speed: number;
 
     constructor() {
+        
         this.health = 20
         this.damage = 5
         this.src = ("assets/gifs/transparentZombieAnimation.gif")
@@ -20,6 +22,7 @@ class Zombies{
         this.height = '150px'
         this.top = 370
         this.left = 450
+        this.speed = -1
     }
 
     spawn(){
@@ -28,8 +31,8 @@ class Zombies{
 
 
     }
-    hurt(){
-        console.log('hit Zombie');
+    hurt(damage: number){
+        console.log('hit Zombie. Current health:', this.health);
         //I want to change zombie gif if possible when the zombie instance is hurt
     }
 

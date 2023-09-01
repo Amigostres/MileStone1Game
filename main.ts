@@ -12,6 +12,7 @@ let audioIndex = 0
 
 let zombieInstances: any[] = [];
 
+//spawn zombie once a few seconds
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
     if (Zombies.count < 5 && .3 > (Math.random() + .1) ) {
@@ -22,6 +23,9 @@ setInterval(() => {
         //creating the zombie element with image element
         const zombieElement = document.createElement('img')
         zombieElement.src = zombie.src
+        // zombieElement.id = zombie.instanceId.toString()
+        zombieElement.setAttribute('id', zombie.instanceId.toString())
+        
 
         zombieElement.setAttribute('draggable', 'false')
         zombieElement.className = 'Zombie'
@@ -31,10 +35,40 @@ setInterval(() => {
         gameContainer?.append(zombieElement)
 
         console.log(zombieInstances)
+
+
+
+
     } else {
         console.log('zombie did not spawn')
     }
 }, 1000)
+
+setInterval(() => {
+    console.log(zombieInstances);
+    
+    zombieInstances.forEach((zombieInstance, index) => {
+        // Get the corresponding DOM element for the zombie instance
+        const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="${zombieInstance.instanceId}"]`);
+        console.log(zombieElement + '======================================');
+        
+        
+        if (!zombieElement) return; // Return if element doesn't exist
+
+        const currentLeftPosition = parseFloat(zombieElement.style.left);
+
+        // If zombie is out of the screen on the left, remove it from the DOM and the array
+        if (currentLeftPosition + zombieElement.clientWidth < 0) {
+            gameContainer?.removeChild(zombieElement);
+            zombieInstances.splice(index, 1); // Remove the zombie from the instances array
+            return;
+        }
+
+        // Otherwise, update its position
+        zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
+    });
+}, 30);
+
 
 
 gameContainer?.addEventListener(`click`, (e) => {

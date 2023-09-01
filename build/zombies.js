@@ -9,13 +9,14 @@ class Zombies {
         this.height = '150px';
         this.top = 370;
         this.left = 450;
+        this.speed = -1;
     }
     spawn() {
         // top: 370px;
         // left: 450px;
     }
-    hurt() {
-        console.log('hit Zombie');
+    hurt(damage) {
+        console.log('hit Zombie. Current health:', this.health);
         //I want to change zombie gif if possible when the zombie instance is hurt
     }
 }

@@ -9,7 +9,7 @@ class Zombies {
         this.height = '150px';
         this.top = 370;
         this.left = 450;
-        this.speed = -1;
+        this.speed = -2; // negative because I want it to go to the left of the position
     }
     spawn() {
         // top: 370px;

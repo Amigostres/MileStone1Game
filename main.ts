@@ -45,12 +45,10 @@ setInterval(() => {
 }, 1000)
 
 setInterval(() => {
-    console.log(zombieInstances);
     
     zombieInstances.forEach((zombieInstance, index) => {
         // Get the corresponding DOM element for the zombie instance
         const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="${zombieInstance.instanceId}"]`);
-        console.log(zombieElement + '======================================');
         
         
         if (!zombieElement) return; // Return if element doesn't exist
@@ -82,7 +80,7 @@ gameContainer?.addEventListener(`click`, (e) => {
     snowball.src = 'assets/SnowBall.png'
     snowball.className = 'snowBall'
     snowball.setAttribute('draggable', 'false')
-    snowball.style.top = `360px` //360px this is relative
+    snowball.style.top = 360 + 'px' //360px 
     snowball.style.left = `30px` //30px
     gameContainer.appendChild(snowball)
     
@@ -99,7 +97,7 @@ gameContainer?.addEventListener(`click`, (e) => {
 
     //get the slope
     //get rise
-    let rise = targetY - 360
+    let rise = targetY - 360 - 15
     let run = targetX - 30
     let slope = rise/run
     // console.log(slope);

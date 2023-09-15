@@ -9,6 +9,7 @@ for (let i = 0; i < 5; i++) {
 }
 let audioIndex = 0;
 let zombieInstances = [];
+let zombieRect = [];
 //spawn zombie once a few seconds
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
@@ -19,24 +20,26 @@ setInterval(() => {
         const zombieElement = document.createElement('img');
         zombieElement.src = zombie.src;
         // zombieElement.id = zombie.instanceId.toString()
-        zombieElement.setAttribute('id', zombie.instanceId.toString());
+        zombieElement.setAttribute('id', `ZomID=${zombie.instanceId.toString()}`);
         zombieElement.setAttribute('draggable', 'false');
         zombieElement.className = 'Zombie';
         zombieElement.style.top = zombie.top + 'px'; // Set the top position of the zombie element
         zombieElement.style.left = zombie.left + 'px'; // Set the left position of the zombie element
         gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.append(zombieElement);
-        console.log(zombieInstances);
+        // console.log(zombieInstances)
     }
     else {
-        console.log('zombie did not spawn');
+        // console.log('zombie did not spawn')
     }
 }, 1000);
 setInterval(() => {
     zombieInstances.forEach((zombieInstance, index) => {
         // Get the corresponding DOM element for the zombie instance
-        const zombieElement = document.querySelector(`.Zombie[id="${zombieInstance.instanceId}"]`);
-        if (!zombieElement)
+        const zombieElement = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
+        // console.log(zombieElement);
+        if (!zombieElement) {
             return; // Return if element doesn't exist
+        }
         const currentLeftPosition = parseFloat(zombieElement.style.left);
         // If zombie is out of the screen on the left, remove it from the DOM and the array
         if (currentLeftPosition + zombieElement.clientWidth < 0) {
@@ -46,11 +49,15 @@ setInterval(() => {
         }
         // Otherwise, update its position
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
+        // zombieRect = zombieInstances.map((zombie) => {
+        //     return zombie.getBoundingClientRect()
+        // })
+        console.log(zombieElement.getBoundingClientRect());
     });
 }, 30);
 gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addEventListener(`click`, (e) => {
     let gameRect = gameContainer.getBoundingClientRect();
-    console.log(gameRect); // this is to deal with dynamic distance from flex box
+    // console.log(gameRect); // this is to deal with dynamic distance from flex box
     //creates the snowball
     const snowball = document.createElement('img');
     snowball.src = 'assets/SnowBall.png';
@@ -103,7 +110,7 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
         //     }
         // }
         if (snowballX >= endX - 30 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
-            // console.log(`out of the div`);
+            // console.log(`out of the div`)
             clearInterval(intervalId); // stops interval 
             gameContainer.removeChild(snowball); // deletes the snowball
         }

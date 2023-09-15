@@ -11,6 +11,7 @@ for (let i = 0; i < 5; i++) {
 let audioIndex = 0
 
 let zombieInstances: any[] = [];
+let zombieRect: DOMRect[] = [];
 
 //spawn zombie once a few seconds
 setInterval(() => {
@@ -24,7 +25,7 @@ setInterval(() => {
         const zombieElement = document.createElement('img')
         zombieElement.src = zombie.src
         // zombieElement.id = zombie.instanceId.toString()
-        zombieElement.setAttribute('id', zombie.instanceId.toString())
+        zombieElement.setAttribute('id', `ZomID=${zombie.instanceId.toString()}`)
         
 
         zombieElement.setAttribute('draggable', 'false')
@@ -34,13 +35,13 @@ setInterval(() => {
 
         gameContainer?.append(zombieElement)
 
-        console.log(zombieInstances)
+        // console.log(zombieInstances)
 
 
 
 
     } else {
-        console.log('zombie did not spawn')
+        // console.log('zombie did not spawn')
     }
 }, 1000)
 
@@ -48,10 +49,14 @@ setInterval(() => {
     
     zombieInstances.forEach((zombieInstance, index) => {
         // Get the corresponding DOM element for the zombie instance
-        const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="${zombieInstance.instanceId}"]`);
         
+        const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
         
-        if (!zombieElement) return; // Return if element doesn't exist
+        // console.log(zombieElement);
+        
+        if (!zombieElement) {
+            return; // Return if element doesn't exist
+        }
 
         const currentLeftPosition = parseFloat(zombieElement.style.left);
 
@@ -64,6 +69,14 @@ setInterval(() => {
 
         // Otherwise, update its position
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
+
+        // zombieRect = zombieInstances.map((zombie) => {
+        //     return zombie.getBoundingClientRect()
+        // })
+        console.log(zombieElement.getBoundingClientRect());
+        
+
+
     });
 }, 30);
 
@@ -72,7 +85,7 @@ setInterval(() => {
 gameContainer?.addEventListener(`click`, (e) => {
     
     let gameRect = gameContainer.getBoundingClientRect()
-    console.log(gameRect); // this is to deal with dynamic distance from flex box
+    // console.log(gameRect); // this is to deal with dynamic distance from flex box
 
 
     //creates the snowball
@@ -140,10 +153,12 @@ gameContainer?.addEventListener(`click`, (e) => {
         //     }
         // }
         
+            
+            
 
 
         if (snowballX >= endX - 30 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
-            // console.log(`out of the div`);
+            // console.log(`out of the div`)
             clearInterval(intervalId) // stops interval 
             gameContainer.removeChild(snowball) // deletes the snowball
           }

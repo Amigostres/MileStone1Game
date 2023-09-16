@@ -52,7 +52,9 @@ setInterval(() => {
         // zombieRect = zombieInstances.map((zombie) => {
         //     return zombie.getBoundingClientRect()
         // })
-        console.log(zombieElement.getBoundingClientRect());
+        let zombieRect = zombieElement.getBoundingClientRect();
+        let zombieX = zombieRect.x;
+        console.log(zombieX);
     });
 }, 30);
 gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addEventListener(`click`, (e) => {

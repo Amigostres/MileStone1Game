@@ -51,9 +51,7 @@ setInterval(() => {
         // Get the corresponding DOM element for the zombie instance
         
         const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
-        
-        // console.log(zombieElement);
-        
+    
         if (!zombieElement) {
             return; // Return if element doesn't exist
         }
@@ -70,10 +68,15 @@ setInterval(() => {
         // Otherwise, update its position
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
 
-        // zombieRect = zombieInstances.map((zombie) => {
-        //     return zombie.getBoundingClientRect()
-        // })
-        console.log(zombieElement.getBoundingClientRect());
+        
+        let zombieRect: DOMRect = zombieElement.getBoundingClientRect()
+        // time to check if there is a snow ball in this zombie instace
+            // if snowball is in a zombie it will disapear
+            //I think i might move this entire code block into the snowball block to hit detection
+        if ( 
+            intersectRect(zombieRect, 0) //0 is just a place holder and this function 
+                                         //just checks if the gameRect is colliding with another rect
+        ){}
         
 
 
@@ -84,7 +87,7 @@ setInterval(() => {
 
 gameContainer?.addEventListener(`click`, (e) => {
     
-    let gameRect = gameContainer.getBoundingClientRect()
+    let gameRect: DOMRect = gameContainer.getBoundingClientRect()
     // console.log(gameRect); // this is to deal with dynamic distance from flex box
 
 
@@ -170,11 +173,11 @@ gameContainer?.addEventListener(`click`, (e) => {
 
 
 
-// function intersectRect(rect2, rect1) {
-//     return !(
-//         rect1.right < rect2.left ||
-//         rect1.left > rect2.right ||
-//         rect1.bottom < rect2.top ||
-//         rect1.top > rect2.bottom
-//     );
-// }
+function intersectRect(rect2: any, rect1: any) {
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
+}

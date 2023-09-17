@@ -10,8 +10,8 @@ for (let i = 0; i < 5; i++) {
 }
 let audioIndex = 0
 
-let zombieInstances: any[] = [];
-let zombieRect: DOMRect[] = [];
+let zombieInstances: any[] = []
+let zombieRect: DOMRect[] = []
 
 //spawn zombie once a few seconds
 setInterval(() => {
@@ -50,18 +50,18 @@ setInterval(() => {
     zombieInstances.forEach((zombieInstance, index) => {
         // Get the corresponding DOM element for the zombie instance
         
-        const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
+        const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`)
     
         if (!zombieElement) {
             return; // Return if element doesn't exist
         }
 
-        const currentLeftPosition = parseFloat(zombieElement.style.left);
+        const currentLeftPosition = parseFloat(zombieElement.style.left)
 
         // If zombie is out of the screen on the left, remove it from the DOM and the array
         if (currentLeftPosition + zombieElement.clientWidth < 0) {
-            gameContainer?.removeChild(zombieElement);
-            zombieInstances.splice(index, 1); // Remove the zombie from the instances array
+            gameContainer?.removeChild(zombieElement)
+            zombieInstances.splice(index, 1) // Remove the zombie from the instances array
             return;
         }
 
@@ -69,14 +69,6 @@ setInterval(() => {
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
 
         
-        let zombieRect: DOMRect = zombieElement.getBoundingClientRect()
-        // time to check if there is a snow ball in this zombie instace
-            // if snowball is in a zombie it will disapear
-            //I think i might move this entire code block into the snowball block to hit detection
-        if ( 
-            intersectRect(zombieRect, 0) //0 is just a place holder and this function 
-                                         //just checks if the gameRect is colliding with another rect
-        ){}
 
     })
 }, 30)
@@ -85,8 +77,8 @@ setInterval(() => {
 
 gameContainer?.addEventListener(`click`, (e) => {
     
+    // this is to deal with dynamic distance from flex box
     let gameRect: DOMRect = gameContainer.getBoundingClientRect()
-    // console.log(gameRect); // this is to deal with dynamic distance from flex box
 
 
     //creates the snowball
@@ -105,16 +97,16 @@ gameContainer?.addEventListener(`click`, (e) => {
     //get the mouse location
     //e.clientX is absolute so we make it relative by substracting gameRect.x
     const targetX = e.clientX - gameRect.x
-    // console.log(`x: ${targetX}`);
+    // console.log(`x: ${targetX}`)
     const targetY = e.clientY
-    // console.log(`y: ${targetY}`);
+    // console.log(`y: ${targetY}`)
 
     //get the slope
     //get rise
     let rise = targetY - 360 - 15
     let run = targetX - 30
     let slope = rise/run
-    // console.log(slope);
+    // console.log(slope)
     //the end of the page
     const endX = gameContainer.clientWidth 
     
@@ -124,7 +116,7 @@ gameContainer?.addEventListener(`click`, (e) => {
 
     // const distance = Math.sqrt(endX ** 2 + endY ** 2)
 
-    const speed = 30; // adjust this value to change the animation duration
+    const speed = 30 // adjust this value to change the animation duration
 
 
     let intervalId = setInterval(() => {
@@ -163,14 +155,14 @@ gameContainer?.addEventListener(`click`, (e) => {
                 // console.log('Hit!')
                 clearInterval(intervalId)   // stops interval 
                 zombieInstance.health -= 5
-                console.log('hit');
+                console.log('hit')
                 
-                console.log(zombieInstance.health);
+                console.log(zombieInstance.health)
                 gameContainer.removeChild(snowball) // deletes the snowball
                 if(zombieInstance.health <= 0){
-                    console.log(`it's DEAD!!`);
-                    gameContainer?.removeChild(zombieElement);
-                    zombieInstances.splice(index, 1); // Remove the zombie from the instances array
+                    console.log(`it's DEAD!!`)
+                    gameContainer?.removeChild(zombieElement)
+                    zombieInstances.splice(index, 1) // Remove the zombie from the instances array
                     return;
                 }
             }
@@ -200,5 +192,5 @@ function intersectRect(rect2: DOMRect, rect1: DOMRect) {
         rect1.left > rect2.right ||
         rect1.bottom < rect2.top ||
         rect1.top > rect2.bottom
-    );
+    )
 }

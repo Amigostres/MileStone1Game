@@ -36,7 +36,6 @@ setInterval(() => {
     zombieInstances.forEach((zombieInstance, index) => {
         // Get the corresponding DOM element for the zombie instance
         const zombieElement = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
-        // console.log(zombieElement);
         if (!zombieElement) {
             return; // Return if element doesn't exist
         }
@@ -49,12 +48,13 @@ setInterval(() => {
         }
         // Otherwise, update its position
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
-        // zombieRect = zombieInstances.map((zombie) => {
-        //     return zombie.getBoundingClientRect()
-        // })
         let zombieRect = zombieElement.getBoundingClientRect();
-        let zombieX = zombieRect.x;
-        console.log(zombieX);
+        // time to check if there is a snow ball in this zombie instace
+        // if snowball is in a zombie it will disapear
+        //I think i might move this entire code block into the snowball block to hit detection
+        if (intersectRect(zombieRect, 0) //0 is just a place holder and this function 
+        //just checks if the gameRect is colliding with another rect
+        ) { }
     });
 }, 30);
 gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addEventListener(`click`, (e) => {
@@ -100,17 +100,30 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
         // check for intersection with zombie
         const snowballRect = snowball.getBoundingClientRect();
         // const zombieRect = zombie.getBoundingClientRect()
-        // if (intersectRect(snowballRect, zombieRect)) { // this will check if 
-        //     // console.log('Hit!')
-        //     clearInterval(intervalId)   // stops interval 
-        //     zombieEntity.health -= 5
-        //     console.log(zombieEntity.health);
-        //     gameContainer.removeChild(snowball) // deletes the snowball
-        //     if(zombieEntity.health <= 0){
-        //         console.log(`it's DEAD!!`);
-        //         delete zombieEntity // this does not link to the one 
-        //     }
-        // }
+        zombieInstances.forEach((zombieInstance, index) => {
+            console.log(zombieInstance);
+            const zombieElement = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
+            if (!zombieElement) {
+                return; // Return if element doesn't exist
+            }
+            let zombieRect = zombieElement === null || zombieElement === void 0 ? void 0 : zombieElement.getBoundingClientRect();
+            // if snowball is in a zombie it will disapear
+            //I think i might move this entire code block into the snowball block to hit detection
+            if (intersectRect(snowballRect, zombieRect)) { // this will check if 
+                // console.log('Hit!')
+                clearInterval(intervalId); // stops interval 
+                zombieInstance.health -= 5;
+                console.log('hit');
+                console.log(zombieInstance.health);
+                gameContainer.removeChild(snowball); // deletes the snowball
+                if (zombieInstance.health <= 0) {
+                    console.log(`it's DEAD!!`);
+                    gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.removeChild(zombieElement);
+                    zombieInstances.splice(index, 1); // Remove the zombie from the instances array
+                    return;
+                }
+            }
+        });
         if (snowballX >= endX - 30 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
             // console.log(`out of the div`)
             clearInterval(intervalId); // stops interval 
@@ -118,11 +131,9 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
         }
     }, 30);
 });
-// function intersectRect(rect2, rect1) {
-//     return !(
-//         rect1.right < rect2.left ||
-//         rect1.left > rect2.right ||
-//         rect1.bottom < rect2.top ||
-//         rect1.top > rect2.bottom
-//     );
-// }
+function intersectRect(rect2, rect1) {
+    return !(rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom);
+}

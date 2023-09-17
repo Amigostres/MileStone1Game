@@ -77,11 +77,9 @@ setInterval(() => {
             intersectRect(zombieRect, 0) //0 is just a place holder and this function 
                                          //just checks if the gameRect is colliding with another rect
         ){}
-        
 
-
-    });
-}, 30);
+    })
+}, 30)
 
 
 
@@ -144,17 +142,40 @@ gameContainer?.addEventListener(`click`, (e) => {
         const snowballRect = snowball.getBoundingClientRect()
         // const zombieRect = zombie.getBoundingClientRect()
 
-        // if (intersectRect(snowballRect, zombieRect)) { // this will check if 
-        //     // console.log('Hit!')
-        //     clearInterval(intervalId)   // stops interval 
-        //     zombieEntity.health -= 5
-        //     console.log(zombieEntity.health);
-        //     gameContainer.removeChild(snowball) // deletes the snowball
-        //     if(zombieEntity.health <= 0){
-        //         console.log(`it's DEAD!!`);
-        //         delete zombieEntity // this does not link to the one 
-        //     }
-        // }
+        
+        zombieInstances.forEach((zombieInstance, index) => {
+            
+
+            console.log(zombieInstance);
+            const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`)
+
+            if (!zombieElement) {
+                return; // Return if element doesn't exist
+            }
+            
+            let zombieRect: DOMRect | undefined = zombieElement?.getBoundingClientRect()
+            // if snowball is in a zombie it will disapear
+            //I think i might move this entire code block into the snowball block to hit detection
+ 
+                
+            
+            if (intersectRect(snowballRect, zombieRect)) { // this will check if 
+                // console.log('Hit!')
+                clearInterval(intervalId)   // stops interval 
+                zombieInstance.health -= 5
+                console.log('hit');
+                
+                console.log(zombieInstance.health);
+                gameContainer.removeChild(snowball) // deletes the snowball
+                if(zombieInstance.health <= 0){
+                    console.log(`it's DEAD!!`);
+                    gameContainer?.removeChild(zombieElement);
+                    zombieInstances.splice(index, 1); // Remove the zombie from the instances array
+                    return;
+                }
+            }
+                
+        });
         
             
             

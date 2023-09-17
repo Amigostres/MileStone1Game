@@ -194,7 +194,7 @@ gameContainer?.addEventListener(`click`, (e) => {
 
 
 
-function intersectRect(rect2: any, rect1: any) {
+function intersectRect(rect2: DOMRect, rect1: DOMRect) {
     return !(
         rect1.right < rect2.left ||
         rect1.left > rect2.right ||

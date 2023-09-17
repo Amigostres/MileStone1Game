@@ -1,7 +1,8 @@
 "use strict";
 const gameContainer = document.querySelector("#game");
-const snowMan = document.getElementById('snowMan');
+let snowMan = document.getElementById('snowMan');
 const audioPool = [];
+let isGameOver = false;
 // create audio elements and add them to the audio pool
 for (let i = 0; i < 5; i++) {
     const audio = new Audio('assets/thrownSnoballSound.mp3');
@@ -13,7 +14,7 @@ let zombieRect = [];
 //spawn zombie once a few seconds
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
-    if (Zombies.count < 5 && .3 > (Math.random() + .1)) {
+    if (Zombies.count < 5 && .3 > (Math.random() + .1) && snowMan) {
         let zombie = new Zombies();
         zombieInstances.push(zombie);
         //creating the zombie element with image element
@@ -32,13 +33,14 @@ setInterval(() => {
         // console.log('zombie did not spawn')
     }
 }, 1000);
+//here this changes the movement of the zombie
 setInterval(() => {
     zombieInstances.forEach((zombieInstance, index) => {
         // Get the corresponding DOM element for the zombie instance
         const zombieElement = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
         if (!zombieElement) {
-            return; // Return if element doesn't exist
-        }
+            return;
+        } //for typeScript's sake
         const currentLeftPosition = parseFloat(zombieElement.style.left);
         // If zombie is out of the screen on the left, remove it from the DOM and the array
         if (currentLeftPosition + zombieElement.clientWidth < 0) {
@@ -46,20 +48,32 @@ setInterval(() => {
             zombieInstances.splice(index, 1); // Remove the zombie from the instances array
             return;
         }
+        //to do list
+        //make it so that if it touched the snowGolem you lose || lose hp
         // Otherwise, update its position
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
-        let zombieRect = zombieElement.getBoundingClientRect();
-        // time to check if there is a snow ball in this zombie instace
-        // if snowball is in a zombie it will disapear
-        //I think i might move this entire code block into the snowball block to hit detection
-        if (intersectRect(zombieRect, 0) //0 is just a place holder and this function 
-        //just checks if the gameRect is colliding with another rect
-        ) { }
+        if (snowMan) {
+            //getting zombie and snowGolem BoundingRect
+            let snowGolemRect = snowMan.getBoundingClientRect();
+            let zombieRect = zombieElement.getBoundingClientRect();
+            //if zombie and snowgolem are touching
+            if (zombieRect.left < snowGolemRect.right) {
+                console.log('game over');
+                snowMan.remove();
+                snowMan = null;
+                isGameOver = true;
+                return;
+            }
+        }
     });
 }, 30);
 gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addEventListener(`click`, (e) => {
+    if (isGameOver) {
+        return;
+    }
+    // this is to deal with dynamic distance from flex box
     let gameRect = gameContainer.getBoundingClientRect();
-    // console.log(gameRect); // this is to deal with dynamic distance from flex box
+    //if snowGolem is ALive then you can shoot
     //creates the snowball
     const snowball = document.createElement('img');
     snowball.src = 'assets/SnowBall.png';
@@ -74,15 +88,15 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
     //get the mouse location
     //e.clientX is absolute so we make it relative by substracting gameRect.x
     const targetX = e.clientX - gameRect.x;
-    // console.log(`x: ${targetX}`);
+    // console.log(`x: ${targetX}`)
     const targetY = e.clientY;
-    // console.log(`y: ${targetY}`);
+    // console.log(`y: ${targetY}`)
     //get the slope
     //get rise
     let rise = targetY - 360 - 15;
     let run = targetX - 30;
     let slope = rise / run;
-    // console.log(slope);
+    // console.log(slope)
     //the end of the page
     const endX = gameContainer.clientWidth;
     //linear equation
@@ -99,9 +113,7 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
         snowball.style.top = `${snowballY + deltaY}px`;
         // check for intersection with zombie
         const snowballRect = snowball.getBoundingClientRect();
-        // const zombieRect = zombie.getBoundingClientRect()
         zombieInstances.forEach((zombieInstance, index) => {
-            console.log(zombieInstance);
             const zombieElement = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`);
             if (!zombieElement) {
                 return; // Return if element doesn't exist

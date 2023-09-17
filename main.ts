@@ -1,7 +1,10 @@
 
 const gameContainer: HTMLElement | null = document.querySelector("#game")
-const snowMan : HTMLElement | null  = document.getElementById('snowMan')
+let snowMan : HTMLElement | null  = document.getElementById('snowMan')
 const audioPool: HTMLAudioElement[] = []
+let isGameOver = false;
+
+
 
 // create audio elements and add them to the audio pool
 for (let i = 0; i < 5; i++) {
@@ -10,13 +13,14 @@ for (let i = 0; i < 5; i++) {
 }
 let audioIndex = 0
 
-let zombieInstances: any[] = []
+let zombieInstances: Zombies[] = []
 let zombieRect: DOMRect[] = []
 
 //spawn zombie once a few seconds
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
-    if (Zombies.count < 5 && .3 > (Math.random() + .1) ) {
+    //and while snowGolem is alive
+    if (Zombies.count < 5 && .3 > (Math.random() + .1) && snowMan) {
         let zombie = new Zombies()
         zombieInstances.push(zombie)
 
@@ -45,6 +49,7 @@ setInterval(() => {
     }
 }, 1000)
 
+//here this changes the movement of the zombie
 setInterval(() => {
     
     zombieInstances.forEach((zombieInstance, index) => {
@@ -52,9 +57,7 @@ setInterval(() => {
         
         const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`)
     
-        if (!zombieElement) {
-            return; // Return if element doesn't exist
-        }
+        if (!zombieElement) { return }//for typeScript's sake
 
         const currentLeftPosition = parseFloat(zombieElement.style.left)
 
@@ -65,9 +68,30 @@ setInterval(() => {
             return;
         }
 
+        //to do list
+            //make it so that if it touched the snowGolem you lose || lose hp
         // Otherwise, update its position
+
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
 
+        if (snowMan) {
+
+            //getting zombie and snowGolem BoundingRect
+            let snowGolemRect = snowMan.getBoundingClientRect();
+            let zombieRect = zombieElement.getBoundingClientRect()
+
+            //if zombie and snowgolem are touching
+            if (zombieRect.left < snowGolemRect.right){
+                
+                console.log('game over');
+                snowMan.remove()
+                snowMan = null
+                isGameOver = true
+                return;
+            }
+ 
+        }
+        
         
 
     })
@@ -77,9 +101,11 @@ setInterval(() => {
 
 gameContainer?.addEventListener(`click`, (e) => {
     
+    if(isGameOver) { return }
     // this is to deal with dynamic distance from flex box
     let gameRect: DOMRect = gameContainer.getBoundingClientRect()
 
+    //if snowGolem is ALive then you can shoot
 
     //creates the snowball
     const snowball = document.createElement('img')
@@ -126,19 +152,17 @@ gameContainer?.addEventListener(`click`, (e) => {
         
         const deltaX = (endX - snowballX) / Math.sqrt((endX - snowballX)**2 + (endY - snowballY)**2) * speed
         const deltaY = (endY - snowballY) / Math.sqrt((endX - snowballX)**2 + (endY - snowballY)**2) * speed
-  
+
         snowball.style.left = `${snowballX + deltaX}px`
         snowball.style.top = `${snowballY + deltaY}px`
 
         // check for intersection with zombie
         const snowballRect = snowball.getBoundingClientRect()
-        // const zombieRect = zombie.getBoundingClientRect()
 
         
         zombieInstances.forEach((zombieInstance, index) => {
             
 
-            console.log(zombieInstance);
             const zombieElement: HTMLElement | null = document.querySelector(`.Zombie[id="ZomID=${zombieInstance.instanceId}"]`)
 
             if (!zombieElement) {
@@ -148,7 +172,7 @@ gameContainer?.addEventListener(`click`, (e) => {
             let zombieRect: DOMRect | undefined = zombieElement?.getBoundingClientRect()
             // if snowball is in a zombie it will disapear
             //I think i might move this entire code block into the snowball block to hit detection
- 
+
                 
             
             if (intersectRect(snowballRect, zombieRect)) { // this will check if 
@@ -177,10 +201,10 @@ gameContainer?.addEventListener(`click`, (e) => {
             // console.log(`out of the div`)
             clearInterval(intervalId) // stops interval 
             gameContainer.removeChild(snowball) // deletes the snowball
-          }
-      }, 30)
+        }
+    }, 30)
 
-})
+})  
 
 
 

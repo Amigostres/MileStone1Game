@@ -11,6 +11,7 @@ class Zombies{
     public top: number;
     public left: number;
     public speed: number;
+    public knockbackVelocity: number;
 
     constructor() {
         
@@ -23,6 +24,7 @@ class Zombies{
         this.top = 370
         this.left = 450
         this.speed = -2 // negative because I want it to go to the left of the position
+        this.knockbackVelocity = 0
     }
 
     spawn(){
@@ -31,8 +33,9 @@ class Zombies{
 
 
     }
-    hurt(damage: number){
-        console.log('hit Zombie. Current health:', this.health);
+    hurt(slope: number){
+        console.log('zombie thrown at this slope', slope);
+        this.knockbackVelocity = 5 * Math.sign(slope)
         //I want to change zombie gif if possible when the zombie instance is hurt
     }
 

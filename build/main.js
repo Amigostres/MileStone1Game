@@ -3,6 +3,8 @@ const gameContainer = document.querySelector("#game");
 let snowMan = document.getElementById('snowMan');
 const audioPool = [];
 let isGameOver = false;
+const initialVelocity = 10;
+const knockbackDeceleration = .5;
 // create audio elements and add them to the audio pool
 for (let i = 0; i < 5; i++) {
     const audio = new Audio('assets/thrownSnoballSound.mp3');
@@ -14,6 +16,7 @@ let zombieRect = [];
 //spawn zombie once a few seconds
 setInterval(() => {
     //when there are less than 5 zombies give a 1/3 chance of spawning one every second
+    //and while snowGolem is alive
     if (Zombies.count < 5 && .3 > (Math.random() + .1) && snowMan) {
         let zombie = new Zombies();
         zombieInstances.push(zombie);
@@ -122,10 +125,13 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
             // if snowball is in a zombie it will disapear
             //I think i might move this entire code block into the snowball block to hit detection
             if (intersectRect(snowballRect, zombieRect)) { // this will check if 
-                // console.log('Hit!')
                 clearInterval(intervalId); // stops interval 
                 zombieInstance.health -= 5;
-                console.log('hit');
+                //todo: when hurt
+                //make zombie start at a high velocity moving to the right
+                //then start deccelerating instanly
+                //knockback direction uses the snowball slope
+                zombieInstance.hurt(slope);
                 console.log(zombieInstance.health);
                 gameContainer.removeChild(snowball); // deletes the snowball
                 if (zombieInstance.health <= 0) {
@@ -137,7 +143,6 @@ gameContainer === null || gameContainer === void 0 ? void 0 : gameContainer.addE
             }
         });
         if (snowballX >= endX - 30 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
-            // console.log(`out of the div`)
             clearInterval(intervalId); // stops interval 
             gameContainer.removeChild(snowball); // deletes the snowball
         }

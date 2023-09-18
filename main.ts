@@ -3,6 +3,8 @@ const gameContainer: HTMLElement | null = document.querySelector("#game")
 let snowMan : HTMLElement | null  = document.getElementById('snowMan')
 const audioPool: HTMLAudioElement[] = []
 let isGameOver = false;
+const initialVelocity = 10
+const knockbackDeceleration = .5
 
 
 
@@ -176,10 +178,15 @@ gameContainer?.addEventListener(`click`, (e) => {
                 
             
             if (intersectRect(snowballRect, zombieRect)) { // this will check if 
-                // console.log('Hit!')
                 clearInterval(intervalId)   // stops interval 
                 zombieInstance.health -= 5
-                console.log('hit')
+                //todo: when hurt
+                    //make zombie start at a high velocity moving to the right
+                    //then start deccelerating instanly
+                    //knockback direction uses the snowball slope
+                
+                    zombieInstance.hurt(slope)
+
                 
                 console.log(zombieInstance.health)
                 gameContainer.removeChild(snowball) // deletes the snowball
@@ -198,7 +205,6 @@ gameContainer?.addEventListener(`click`, (e) => {
 
 
         if (snowballX >= endX - 30 || snowballY >= 465) { // I don't want the snowball to go under so I delete iti f it does
-            // console.log(`out of the div`)
             clearInterval(intervalId) // stops interval 
             gameContainer.removeChild(snowball) // deletes the snowball
         }

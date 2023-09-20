@@ -61,8 +61,9 @@ setInterval(() => {
     
         if (!zombieElement) { return }//for typeScript's sake
 
-        const currentLeftPosition = parseFloat(zombieElement.style.left)
-
+        let currentLeftPosition = parseFloat(zombieElement.style.left)
+        let currentTopPosition = parseFloat(zombieElement.style.top)
+        
         // If zombie is out of the screen on the left, remove it from the DOM and the array
         if (currentLeftPosition + zombieElement.clientWidth < 0) {
             gameContainer?.removeChild(zombieElement)
@@ -70,9 +71,25 @@ setInterval(() => {
             return;
         }
 
-        //to do list
-            //make it so that if it touched the snowGolem you lose || lose hp
-        // Otherwise, update its position
+        //to Do:
+            //when the damage is done with the run method move the zombie to the air by adding the y-axis
+            //when now make it fall to a floor
+            //370px is the floor "I think"
+
+
+        //as long the zombie is in the air it will continue to fall
+        while(currentTopPosition < 375){
+            
+            zombieElement.style.top = currentTopPosition + 5 + 'px';
+            currentTopPosition = parseFloat(zombieElement.style.top)
+        } 
+
+        if( zombieInstance.damageTaken === true){
+            zombieElement.style.top = currentTopPosition - 30 + 'px';
+            
+        }
+
+
 
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
 
@@ -102,7 +119,7 @@ setInterval(() => {
 
 
 gameContainer?.addEventListener(`click`, (e) => {
-    
+    //don't even to run if the game is over
     if(isGameOver) { return }
     // this is to deal with dynamic distance from flex box
     let gameRect: DOMRect = gameContainer.getBoundingClientRect()
@@ -125,9 +142,7 @@ gameContainer?.addEventListener(`click`, (e) => {
     //get the mouse location
     //e.clientX is absolute so we make it relative by substracting gameRect.x
     const targetX = e.clientX - gameRect.x
-    // console.log(`x: ${targetX}`)
     const targetY = e.clientY
-    // console.log(`y: ${targetY}`)
 
     //get the slope
     //get rise
@@ -175,9 +190,10 @@ gameContainer?.addEventListener(`click`, (e) => {
             // if snowball is in a zombie it will disapear
             //I think i might move this entire code block into the snowball block to hit detection
 
-                
+            //turns it into a num so it's easier to work with
+            const currentLeftPosition = parseFloat(zombieElement.style.left)
             
-            if (intersectRect(snowballRect, zombieRect)) { // this will check if 
+            if (intersectRect(snowballRect, zombieRect)) { // this will check if snowBall and zombie collide
                 clearInterval(intervalId)   // stops interval 
                 zombieInstance.health -= 5
                 //todo: when hurt
@@ -185,7 +201,7 @@ gameContainer?.addEventListener(`click`, (e) => {
                     //then start deccelerating instanly
                     //knockback direction uses the snowball slope
                 
-                    zombieInstance.hurt(slope)
+                    zombieInstance.hurt(1)
 
                 
                 console.log(zombieInstance.health)

@@ -12,6 +12,8 @@ class Zombies{
     public left: number;
     public speed: number;
     public knockbackVelocity: number;
+    public damageTaken: boolean;
+    public gravity: boolean;
 
     constructor() {
         
@@ -25,6 +27,8 @@ class Zombies{
         this.left = 450
         this.speed = -2 // negative because I want it to go to the left of the position
         this.knockbackVelocity = 0
+        this.damageTaken = false
+        this.gravity = false
     }
 
     spawn(){
@@ -33,9 +37,17 @@ class Zombies{
 
 
     }
+    //when hurt I want to try to change the speed to the oppiste direction and change it back after a set time
     hurt(slope: number){
-        console.log('zombie thrown at this slope', slope);
-        this.knockbackVelocity = 5 * Math.sign(slope)
+        console.log('zombie thrown back just like in the game', slope);
+        this.speed = 30
+        this.damageTaken = true
+        setTimeout(() => {
+            this.speed = -2
+            this.damageTaken = false
+            this.gravity = true
+        }, 100)
+        return;
         //I want to change zombie gif if possible when the zombie instance is hurt
     }
 

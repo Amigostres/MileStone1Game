@@ -56,12 +56,14 @@ setInterval(() => {
         //when the damage is done with the run method move the zombie to the air by adding the y-axis
         //when now make it fall to a floor
         //370px is the floor "I think"
-        while (currentTopPosition < 375) {
+        //as long the zombie is in the air it will continue to fall
+        if (currentTopPosition < 375 && zombieInstance.gravity == true) {
             zombieElement.style.top = currentTopPosition + 5 + 'px';
             currentTopPosition = parseFloat(zombieElement.style.top);
         }
         if (zombieInstance.damageTaken === true) {
             zombieElement.style.top = currentTopPosition - 30 + 'px';
+            currentTopPosition = parseFloat(zombieElement.style.top);
         }
         zombieElement.style.left = (currentLeftPosition + zombieInstance.speed) + "px";
         if (snowMan) {

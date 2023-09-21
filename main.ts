@@ -78,15 +78,16 @@ setInterval(() => {
 
 
         //as long the zombie is in the air it will continue to fall
-        while(currentTopPosition < 375){
+        if(currentTopPosition < 375 && zombieInstance.gravity == true){
             
             zombieElement.style.top = currentTopPosition + 5 + 'px';
             currentTopPosition = parseFloat(zombieElement.style.top)
+            
         } 
 
         if( zombieInstance.damageTaken === true){
             zombieElement.style.top = currentTopPosition - 30 + 'px';
-            
+            currentTopPosition = parseFloat(zombieElement.style.top)
         }
 
 
